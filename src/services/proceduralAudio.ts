@@ -35,7 +35,7 @@ export const SOUND_PROFILES: SoundProfile[] = [
     category: 'Atmosphere',
     mathDescription: 'Bandpass filtered white noise burst with exponential decay + low sine pop',
     conventionalFileSize: '~250 KB (WAV)',
-    torchboundSize: '0 bytes (12 lines of JS)',
+    torchboundSize: '0 Bytes',
   },
   {
     id: 'slash',
@@ -43,7 +43,7 @@ export const SOUND_PROFILES: SoundProfile[] = [
     category: 'Combat',
     mathDescription: 'Sawtooth oscillator sweeping 700Hz -> 90Hz in 120ms with lowpass envelope',
     conventionalFileSize: '~180 KB (WAV)',
-    torchboundSize: '0 bytes (9 lines of JS)',
+    torchboundSize: '0 Bytes',
   },
   {
     id: 'monster',
@@ -51,7 +51,7 @@ export const SOUND_PROFILES: SoundProfile[] = [
     category: 'Enemies',
     mathDescription: 'FM synthesis: 65Hz carrier modulated by 12Hz sine with distortion waveshaper',
     conventionalFileSize: '~450 KB (WAV)',
-    torchboundSize: '0 bytes (16 lines of JS)',
+    torchboundSize: '0 Bytes',
   },
   {
     id: 'coin',
@@ -59,7 +59,7 @@ export const SOUND_PROFILES: SoundProfile[] = [
     category: 'Inventory',
     mathDescription: 'Dual pure sine tones at 987Hz (B5) and 1318Hz (E6) with rapid decay',
     conventionalFileSize: '~90 KB (WAV)',
-    torchboundSize: '0 bytes (7 lines of JS)',
+    torchboundSize: '0 Bytes',
   },
   {
     id: 'crystal',
@@ -67,7 +67,7 @@ export const SOUND_PROFILES: SoundProfile[] = [
     category: 'Magic',
     mathDescription: 'Chime arpeggio of 3 staggered harmonics (1760Hz, 2637Hz, 3520Hz) with reverb ping',
     conventionalFileSize: '~380 KB (WAV)',
-    torchboundSize: '0 bytes (14 lines of JS)',
+    torchboundSize: '0 Bytes',
   },
   {
     id: 'footstep',
@@ -75,7 +75,7 @@ export const SOUND_PROFILES: SoundProfile[] = [
     category: 'Movement',
     mathDescription: '25ms burst of low-passed pink noise with quadratic damping',
     conventionalFileSize: '~75 KB (WAV)',
-    torchboundSize: '0 bytes (8 lines of JS)',
+    torchboundSize: '0 Bytes',
   },
   {
     id: 'ambient',
@@ -83,7 +83,7 @@ export const SOUND_PROFILES: SoundProfile[] = [
     category: 'Ambience',
     mathDescription: 'Dual detuned triangle waves (55Hz / 57Hz) with LFO resonant filter sweep',
     conventionalFileSize: '~1.8 MB (OGG loop)',
-    torchboundSize: '0 bytes (18 lines of JS)',
+    torchboundSize: '0 Bytes',
   },
 ];
 

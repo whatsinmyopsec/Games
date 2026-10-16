@@ -136,9 +136,9 @@ export const AudioSynthesizerLab: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Sound Selection List (Left Column) */}
-        <div className="lg:col-span-5 space-y-2">
+        <div className="lg:col-span-5 min-w-0 space-y-2">
           <span className="text-xs font-mono text-stone-400 uppercase tracking-wider block mb-1">
             Click to Synthesize in Real-Time:
           </span>
@@ -150,14 +150,14 @@ export const AudioSynthesizerLab: React.FC = () => {
                 <button
                   key={sound.id}
                   onClick={() => handlePlaySound(sound)}
-                  className={`w-full p-3 rounded-xl border text-left transition flex items-center justify-between gap-3 group cursor-pointer ${
+                  className={`w-full p-2.5 sm:p-3 rounded-xl border text-left transition flex items-center justify-between gap-3 group cursor-pointer overflow-hidden min-w-0 ${
                     isSelected 
                       ? 'bg-cyan-950/40 border-cyan-500/60 shadow-lg shadow-cyan-950/30' 
                       : 'bg-stone-950/60 border-stone-800/80 hover:bg-stone-800/40'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg border transition ${
+                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                    <div className={`p-2 rounded-lg border shrink-0 transition ${
                       isSelected && isPlaying
                         ? 'bg-amber-500 text-stone-950 border-amber-400 scale-105'
                         : isSelected
@@ -166,22 +166,22 @@ export const AudioSynthesizerLab: React.FC = () => {
                     }`}>
                       <Play className="h-3.5 w-3.5 fill-current" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-xs font-bold text-stone-200 font-mono">{sound.name}</h4>
-                        <span className="text-[10px] text-stone-400 font-mono">({sound.category})</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <h4 className="text-xs font-bold text-stone-200 font-mono truncate">{sound.name}</h4>
+                        <span className="text-[10px] text-stone-500 font-mono shrink-0 hidden sm:inline">({sound.category})</span>
                       </div>
-                      <p className="text-[11px] text-stone-400 truncate max-w-[210px] sm:max-w-xs mt-0.5">
+                      <p className="text-[11px] text-stone-400 truncate mt-0.5">
                         {sound.mathDescription}
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-right shrink-0">
-                    <span className="text-[11px] font-mono text-emerald-400 font-bold block">
+                  <div className="text-right shrink-0 pl-2">
+                    <span className="text-[11px] font-mono text-emerald-400 font-bold block whitespace-nowrap">
                       {sound.torchboundSize}
                     </span>
-                    <span className="text-[10px] font-mono text-stone-400 line-through">
+                    <span className="text-[10px] font-mono text-stone-500 line-through block whitespace-nowrap">
                       {sound.conventionalFileSize}
                     </span>
                   </div>
@@ -192,7 +192,7 @@ export const AudioSynthesizerLab: React.FC = () => {
         </div>
 
         {/* Synthesizer Display & Waveform (Right Column) */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-7 min-w-0 space-y-4">
           <div className="rounded-xl border border-stone-800 bg-stone-950/80 p-4 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
