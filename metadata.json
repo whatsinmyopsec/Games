@@ -1,0 +1,6 @@
+{
+  "name": "How Torchbound Is So Tiny - Game Architecture Deconstruction",
+  "description": "An interactive deep-dive into how Torchbound achieves a 13MB executable and 1MB game payload using Neutralinojs, procedural Web Audio, RLE spritesheets, and Canvas 2D.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
