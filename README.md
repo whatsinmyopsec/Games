@@ -51,9 +51,51 @@ Despite the stumbling blocks above, here is how the two featured games achieve e
 
 In the latest release of Torchbound (**v2.5.1**), the developer decoupled the two pre-rendered MP4 video cutscenes and bundled the game into `resources.neu`. The Windows zip shrank from **13.2 MB down to 1.6 MB**—an **88% reduction** that directly validated our study's findings!
 
-### Automated Game Updates
-1. **Real-Time Client-Side Poller**: The site checks `https://torchbound-duk.pages.dev/version.json` dynamically with `cache: 'no-store'` so visitors always see live upstream releases.
-2. **Automated GitHub Action**: `.github/workflows/check-updates.yml` runs daily at 00:00 UTC to verify and deploy upstream updates automatically to GitHub Pages.
+---
+
+## How Everything On The Site Stays Up To Date
+
+To ensure the case study, metrics, and playable games never go stale as developers release new patches, the platform employs a four-layer synchronization architecture:
+
+### 1. Live Embedded Game Engines (Zero Stale Code)
+Both playable viewports are framed directly from each game's official production origin:
+- **Torchbound**: `https://torchbound-duk.pages.dev/`
+- **Dungen Doom**: `https://kivylius.com/games/dungen-doom/`
+
+Because these run in live viewports communicating directly with upstream edge networks:
+- Upstream bug fixes, class rebalances, or gameplay updates appear immediately for all visitors upon page reload.
+- No local game binary mirrors are required, eliminating stale asset desynchronization.
+
+### 2. Client-Side Real-Time Version Polling (`cache: 'no-store'`)
+The application header runs a dynamic React hook that queries Torchbound's official release manifest (`/version.json`):
+```typescript
+const checkLiveVersion = async () => {
+  const res = await fetch('https://torchbound-duk.pages.dev/version.json', { 
+    cache: 'no-store' // Bypasses browser cache
+  });
+  if (res.ok) {
+    const data = await res.json();
+    setLiveVersion(data.version); // Dynamically displays v2.5.1 in the UI
+  }
+};
+```
+- **Instant verification**: When visitors load the site, the browser requests the latest upstream manifest directly from Cloudflare Pages.
+- **Auto-polling**: Runs every 3 minutes while the tab is active, plus includes a manual refresh button (`↻`) for instant re-verification.
+
+### 3. Automated Daily GitHub Actions Workflow (`check-updates.yml`)
+To keep the static distribution on GitHub Pages in sync with upstream changes:
+- **Cron Schedule**: Executes automatically every night at `00:00 UTC` (`0 0 * * *`).
+- **Manual Trigger**: Supports `workflow_dispatch` so maintainers can trigger an immediate rebuild with one click from GitHub's Actions tab.
+- **Workflow Pipeline**:
+  1. Boots an isolated Ubuntu runner on GitHub.
+  2. Queries `https://torchbound-duk.pages.dev/version.json` using `curl` and `jq`.
+  3. Rebuilds the production bundle (`npm run build`).
+  4. Automatically redeploys the fresh site to GitHub Pages via `actions/deploy-pages@v4`.
+
+### 4. Version Evolution & Historical Tracking
+Whenever a creator makes an architectural change (such as Torchbound's 88% zip reduction from 13.2 MB to 1.6 MB by decoupling video cutscenes):
+- The data layer tracks both **current** and **historical** breakdowns.
+- Visitors can use the interactive **Zip Inspector** toggle to compare file weights and packaging strategies between releases.
 
 ---
 
