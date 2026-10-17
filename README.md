@@ -36,13 +36,24 @@ Software development is a journey of trial, error, and occasional clumsy oversig
 
 Despite the stumbling blocks above, here is how the two featured games achieve extreme miniaturization:
 
-| Feature | Torchbound (2D RPG) | Dungen Doom (3D Retro FPS) | Conventional Game |
+| Feature | Torchbound (2D RPG v2.5.1) | Dungen Doom (3D Retro FPS) | Conventional Game |
 | :--- | :--- | :--- | :--- |
+| **Download Zip** | **1.6 MB Zip** (was 13.2 MB) | N/A (Web App) | 500 MB – 5 GB |
 | **Initial Transfer** | ~298 KB gzipped | ~357 KB gzipped | 100 MB – 2 GB |
 | **3D / 2D Engine** | HTML5 Canvas 2D (`destination-out`) | Three.js WebGL + 2.5D Billboards | Unity / Unreal Engine |
 | **Textures** | Base64 RLE pixel strings | Procedural `THREE.CanvasTexture` in memory | 50 MB+ PNG/DDS atlases |
 | **Audio** | 100% Procedural Web Audio oscillators | On-demand 2KB Kenney micro-samples | 50 MB+ WAV/OGG files |
 | **3D Models** | N/A (2D grid) | 0 bytes (camera-facing quad sprites) | 20 MB+ rigged FBX meshes |
+
+---
+
+## The v2.5.1 Release Update (13.2 MB → 1.6 MB)
+
+In the latest release of Torchbound (**v2.5.1**), the developer decoupled the two pre-rendered MP4 video cutscenes and bundled the game into `resources.neu`. The Windows zip shrank from **13.2 MB down to 1.6 MB**—an **88% reduction** that directly validated our study's findings!
+
+### Automated Game Updates
+1. **Real-Time Client-Side Poller**: The site checks `https://torchbound-duk.pages.dev/version.json` dynamically with `cache: 'no-store'` so visitors always see live upstream releases.
+2. **Automated GitHub Action**: `.github/workflows/check-updates.yml` runs daily at 00:00 UTC to verify and deploy upstream updates automatically to GitHub Pages.
 
 ---
 

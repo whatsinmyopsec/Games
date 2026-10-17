@@ -1,28 +1,82 @@
 import { ZipFileEntry, EngineComparisonItem, CodeSnippet } from '../types';
 
 export const TORCHBOUND_STATS = {
-  version: '2.2.0',
-  downloadZipSizeMB: 13.2,
-  downloadZipSizeBytes: 13856712,
+  version: '2.5.1',
+  previousVersion: '2.2.0',
+  downloadZipSizeMB: 1.6,
+  previousZipSizeMB: 13.2,
+  downloadZipSizeBytes: 1657358, // 1.58 MB (~1.6 MB)
   gameHtmlSizeBytes: 1035520, // 1.01 MB
   gameHtmlGzipSizeBytes: 298400, // ~291 KB over Cloudflare brotli/gzip
   executableCompressedMB: 1.15,
   executableUncompressedMB: 2.74,
-  videoCutscenesBytes: 12321383, // 11.75 MB compressed in the zip (89% of zip!)
-  actualGameLogicAssetsBytes: 1076228, // ~1.03 MB
+  resourcesNeuBytes: 1230717, // 1.17 MB
   audioFilesCount: 0,
   textureAtlasesCount: 0,
   dungeonGeometryFilesCount: 0,
+  optimizationDropPercentage: '88% size reduction (13.2 MB → 1.6 MB)',
 };
 
-export const ZIP_FILE_BREAKDOWN: ZipFileEntry[] = [
+export const TORCHBOUND_VERSION_HISTORY = [
+  {
+    version: '2.5.1',
+    date: 'October 2026 (Latest Release)',
+    zipSizeMB: 1.6,
+    summary: 'Streamed/decoupled opening video cutscenes and bundled assets into resources.neu. Download dropped from 13.2 MB to 1.6 MB (88% reduction)!',
+    breakdown: [
+      { name: 'Torchbound.exe', size: '2.74 MB (1.15 MB zipped)', desc: 'Neutralinojs runtime binary using OS Edge WebView2' },
+      { name: 'resources.neu', size: '1.23 MB (480 KB zipped)', desc: 'Full game engine, HTML5 canvas, sound synth, WebRTC co-op' },
+      { name: 'README.txt', size: '491 bytes', desc: 'Installation instructions' },
+    ]
+  },
+  {
+    version: '2.2.0',
+    date: 'Earlier Release',
+    zipSizeMB: 13.2,
+    summary: 'Bundled two pre-rendered video cutscenes (intro.mp4 + intro_mobile.mp4 = 12.3 MB). Proved our case study thesis that 89% of the archive was just video!',
+    breakdown: [
+      { name: 'intro.mp4 & intro_mobile.mp4', size: '12.32 MB (11.75 MB zipped)', desc: 'Two opening video cutscenes (89% of zip)' },
+      { name: 'Torchbound.exe', size: '2.74 MB (1.15 MB zipped)', desc: 'Neutralinojs launcher' },
+      { name: 'game.html', size: '1.04 MB (312 KB zipped)', desc: 'Complete 2D RPG logic, sprites, and sound' },
+    ]
+  }
+];
+
+export const CURRENT_ZIP_FILE_BREAKDOWN: ZipFileEntry[] = [
+  {
+    path: 'Torchbound/Torchbound.exe',
+    name: 'Torchbound.exe',
+    sizeBytes: 2738688,
+    compressedBytes: 1155235,
+    category: 'executable',
+    description: 'Neutralinojs native Windows launcher. Instantiates the pre-installed Microsoft Edge WebView2 on Windows 10/11 instead of packaging a 180MB Chromium build.',
+  },
+  {
+    path: 'Torchbound/resources.neu',
+    name: 'resources.neu',
+    sizeBytes: 1230717,
+    compressedBytes: 501632,
+    category: 'game-core',
+    description: 'THE ENTIRE GAME! Contains game.html, procedural Web Audio synth, RLE sprite palettes, all classes, dungeons, bosses, dialog, and WebRTC co-op networking packed into Neutralino binary resource archive.',
+  },
+  {
+    path: 'Torchbound/README.txt',
+    name: 'README.txt',
+    sizeBytes: 491,
+    compressedBytes: 310,
+    category: 'config',
+    description: 'Quick-start installation guide, SmartScreen run instructions, and controls.',
+  },
+];
+
+export const HISTORICAL_ZIP_FILE_BREAKDOWN: ZipFileEntry[] = [
   {
     path: 'Torchbound/resources/assets/intro.mp4',
     name: 'intro.mp4',
     sizeBytes: 7512340,
     compressedBytes: 7320000,
     category: 'video',
-    description: 'High-res desktop opening cinematic video. Accounts for over 54% of the entire download archive alone!',
+    description: 'High-res desktop opening cinematic video. Accounted for 54% of the entire download archive alone!',
   },
   {
     path: 'Torchbound/resources/assets/intro_mobile.mp4',
@@ -30,7 +84,7 @@ export const ZIP_FILE_BREAKDOWN: ZipFileEntry[] = [
     sizeBytes: 4809043,
     compressedBytes: 4680000,
     category: 'video',
-    description: 'Mobile-formatted opening cinematic video. Combined with intro.mp4, cutscene videos make up 89% of the 13.2 MB zip.',
+    description: 'Mobile-formatted opening cinematic video. Combined with intro.mp4, cutscenes made up 89% of the 13.2 MB zip.',
   },
   {
     path: 'Torchbound/Torchbound.exe',
@@ -38,7 +92,7 @@ export const ZIP_FILE_BREAKDOWN: ZipFileEntry[] = [
     sizeBytes: 2738688,
     compressedBytes: 1155235,
     category: 'executable',
-    description: 'Neutralinojs native Windows launcher. It hooks into the OS Microsoft Edge WebView2 instead of embedding a bloated Chromium browser.',
+    description: 'Neutralinojs native Windows launcher hooking into Edge WebView2.',
   },
   {
     path: 'Torchbound/resources/game.html',
@@ -46,280 +100,272 @@ export const ZIP_FILE_BREAKDOWN: ZipFileEntry[] = [
     sizeBytes: 1035553,
     compressedBytes: 312000,
     category: 'game-core',
-    description: 'THE ENTIRE GAME! Contains rendering engine, procedural audio synth, RLE sprite palettes, all classes, dungeons, bosses, dialog, and WebRTC co-op networking.',
+    description: 'The complete 2D RPG game logic, procedural audio synth, and graphics.',
+  },
+];
+
+export const ZIP_FILE_BREAKDOWN = CURRENT_ZIP_FILE_BREAKDOWN;
+
+export const PILLARS_DATA = [
+  {
+    id: 'runtime',
+    title: 'Neutralinojs vs Electron Architecture',
+    savedMegabytes: 'Saves 150–200 MB',
+    tag: 'RUNTIME & PACKAGING',
+    headline: 'Native WebView2 Hooking instead of Bundling Chromium',
+    description: 'Standard desktop HTML5 wrappers (like Electron) bundle an entire copy of Google Chrome and Node.js. Torchbound uses Neutralinojs, which compiles to a ~1.15 MB executable that commands Windows 10/11 to instantiate Microsoft Edge WebView2, which is already installed on the OS.',
+    mechanics: [
+      'Executes a lean C++ native wrapper (Torchbound.exe).',
+      'Communicates via a local WebSocket/IPC with the WebView2 process.',
+      'Saves player states, settings, and keybinds to local storage/files without node_modules.',
+      'Enjoys full Chromium hardware acceleration and WebGL performance with zero browser payload overhead.'
+    ],
+    conventionalVs: 'Electron bundles ~180 MB of Chromium binaries, audio codecs, and Node.js runtime.'
   },
   {
-    path: 'Torchbound/resources/neutralino.js',
-    name: 'neutralino.js',
-    sizeBytes: 17647,
-    compressedBytes: 6800,
-    category: 'config',
-    description: 'Lightweight client library for Neutralinojs bridging native OS calls (window framing, filesystem saves, fullscreen) via local IPC.',
+    id: 'audio',
+    title: 'Procedural Web Audio API Sound System',
+    savedMegabytes: 'Saves 50–120 MB',
+    tag: 'AUDIO ENGINE',
+    headline: 'Zero Audio Files: Every Footstep & Sword Slash is Math',
+    description: 'Instead of shipping hundreds of WAV, MP3, or OGG sound files for attacks, footsteps, magic spells, and ambient dungeon noise, Torchbound contains ZERO audio files. Sounds are synthesized in real-time using browser native Web Audio API oscillators and noise generators.',
+    mechanics: [
+      'Sword Slash: 120ms sawtooth wave sweeping from 750Hz down to 80Hz.',
+      'Monster Roar: 65Hz carrier wave frequency-modulated by a 12Hz sine with distortion waveshaping.',
+      'Torch Fire: Low-passed white noise bursts with exponential decay envelopes.',
+      'Coin Pickup: Pure dual sine harmonics at 987Hz and 1318Hz with rapid 150ms decay.'
+    ],
+    conventionalVs: 'Typical indie RPGs package 50–100 MB of sampled sound effects and audio banks.'
   },
   {
-    path: 'Torchbound/resources/icons/*',
-    name: 'App Icons & Favicons',
-    sizeBytes: 65671,
-    compressedBytes: 48000,
-    category: 'assets',
-    description: 'PNG icons for Windows shortcuts, taskbar, and web app manifest tiles.',
+    id: 'graphics',
+    title: 'Base64 Run-Length Encoded (RLE) Spritesheets',
+    savedMegabytes: 'Saves 30–80 MB',
+    tag: 'ART PIPELINE',
+    headline: 'Compressed Sprite Strings + Dynamic Color Mixing',
+    description: 'Characters, monsters, walls, and items are stored as compact Base64 Run-Length Encoded bit patterns embedded directly in the JavaScript source. Instead of shipping 40 monster sprite variations, the engine uses dynamic palette-swapping math.',
+    mechanics: [
+      'Spritesheets are stored as packed hexadecimal / base64 character strings.',
+      'Engine decodes strings into offscreen HTML5 2D Canvas contexts at boot.',
+      'Dynamic color arithmetic (hexRGB and shade) generates dozens of monster skins (fire, ice, poison) without additional texture files.',
+      'Result: Entire visual asset atlas is under 400 KB of text.'
+    ],
+    conventionalVs: 'Standard 2D engines package multiple 2048x2048 PNG texture atlases and sprite sheets.'
   },
   {
-    path: 'Torchbound/resources/tb_neu.js & config',
-    name: 'tb_neu.js & neutralino.config.json',
-    sizeBytes: 3275,
-    compressedBytes: 1400,
-    category: 'config',
-    description: 'Glue script for desktop save storage in the local folder and update synchronizer.',
+    id: 'dungeon',
+    title: 'Infinite Procedural Dungeons (Mulberry32)',
+    savedMegabytes: 'Saves 15–40 MB',
+    tag: 'LEVEL DESIGN',
+    headline: 'Deterministic Coordinate PRNG Carving Rooms in Memory',
+    description: 'There are no pre-baked tilemap JSON files, TMX maps, or 3D collision meshes. Dungeons, loot chests, and mob encounters are generated in memory using a deterministic 15-line Mulberry32 pseudo-random number generator.',
+    mechanics: [
+      'Takes a single seed number (e.g. 1337) and carves labyrinth corridors algorithmically.',
+      'Deterministic: Every multiplayer peer generates the exact same dungeon layout locally without downloading map files.',
+      'Room connectivity, wall colliders, and enemy spawn locations exist only in temporary RAM arrays during play.'
+    ],
+    conventionalVs: 'Traditional games ship 20MB to 100MB of pre-baked level geometry and tilemap data.'
   },
+  {
+    id: 'lighting',
+    title: 'Canvas2D Darkness Masking (destination-out)',
+    savedMegabytes: 'Saves 10–25 MB',
+    tag: 'GRAPHICS SHADERS',
+    headline: 'Radial Gradients Punching Holes in Darkness',
+    description: 'Torchbound creates its moody dungeon atmosphere without 3D normal maps or heavy shader compilation pipelines. It paints a solid darkness overlay on an HTML5 canvas and uses destination-out blend modes to punch out light cones.',
+    mechanics: [
+      'Draws dungeon darkness overlay with rgba(7, 5, 12, 0.94).',
+      'Sets ctx.globalCompositeOperation = "destination-out".',
+      'Draws radial gradient around player torch: Math.sin(tick * 0.1) * 3 introduces realistic fire flicker.',
+      'Punches crisp light circles for wall sconces and magic spells with zero GPU shader overhead.'
+    ],
+    conventionalVs: 'Modern engines compile complex 2D shadow caster shaders, normal lightmaps, and blur passes.'
+  }
 ];
 
 export const ENGINE_COMPARISONS: EngineComparisonItem[] = [
   {
-    name: 'Torchbound (Neutralinojs + WebView2)',
-    runtimeType: 'Native C++ bridge + OS WebView2',
-    typicalBaseSize: '1.2 MB – 2.7 MB',
-    sizeMB: 2.7,
+    name: 'Torchbound (Neutralinojs)',
+    sizeMB: 1.6,
+    runtimeType: 'C++ Native + Edge WebView2',
     bundledChromium: false,
-    builtInAudioFormat: 'Procedural Web Audio API (0 MB)',
-    torchboundEquivalentSize: '13.2 MB (or 1.4 MB without MP4 cutscene)',
-    pros: 'Zero Chromium bloat, native OS windowing, tiny 2.7MB binary, instant launch',
-    cons: 'Requires Windows 10/11 with WebView2 (already built-in to modern Windows)',
+    builtInAudioFormat: 'Procedural Web Audio (0 MB)',
+    torchboundEquivalentSize: '1.6 MB (Windows Zip)',
+    pros: 'Ultra-lean 1.6 MB download, instant launch, native window controls, uses OS pre-installed browser engine, zero Node.js overhead.',
+    cons: 'Requires Windows 10/11 with Edge WebView2 installed (comes pre-installed by default).'
   },
   {
-    name: 'Electron (e.g., Discord, Slack, VS Code)',
-    runtimeType: 'Full Chromium Browser + Node.js runtime',
-    typicalBaseSize: '150 MB – 220 MB',
-    sizeMB: 180,
+    name: 'Electron (Standard Desktop Web)',
+    sizeMB: 185.0,
+    runtimeType: 'Full Chromium + Node.js Binary',
     bundledChromium: true,
-    builtInAudioFormat: 'Sample-based audio (MP3/OGG)',
-    torchboundEquivalentSize: '195 MB (~15x larger)',
-    pros: 'Identical rendering on old/unsupported OS versions',
-    cons: 'Massive binary size, duplicate browser in memory for every app, high RAM usage',
+    builtInAudioFormat: 'Sampled MP3/OGG (40-80 MB)',
+    torchboundEquivalentSize: '185 MB minimum',
+    pros: 'Guaranteed consistent Chromium version across all platforms, extensive Node.js native API access.',
+    cons: 'Massive binary bloat (+150MB overhead before game assets), high RAM consumption (250MB+ idle).'
   },
   {
-    name: 'Unity (Standard 2D Web/Desktop Build)',
-    runtimeType: 'Mono / IL2CPP C++ Engine Runtime',
-    typicalBaseSize: '70 MB – 150 MB',
-    sizeMB: 110,
+    name: 'Unity 2D Standalone',
+    sizeMB: 110.0,
+    runtimeType: 'Mono / IL2CPP C# Engine',
     bundledChromium: false,
-    builtInAudioFormat: 'FMOD / Unity Audio sample banks',
-    torchboundEquivalentSize: '135 MB (~10x larger)',
-    pros: 'Rich visual editor, multiplatform export, physics engine',
-    cons: 'Heavy engine overhead, large C++ assemblies, shader caches, slow cold boot',
+    builtInAudioFormat: 'FMOD / Unity Audio Bank (50 MB)',
+    torchboundEquivalentSize: '110 MB minimum',
+    pros: 'Rich visual editor, extensive asset store, multi-platform deployment.',
+    cons: 'Heavy runtime overhead, C# runtime libraries, complex asset serialization.'
   },
   {
-    name: 'Unreal Engine 5 (2D/3D project)',
-    runtimeType: 'Heavy C++ game engine runtime',
-    typicalBaseSize: '250 MB – 2 GB (base empty project)',
-    sizeMB: 450,
+    name: 'Godot 4 Standalone',
+    sizeMB: 48.0,
+    runtimeType: 'C++ Lightweight Engine',
     bundledChromium: false,
-    builtInAudioFormat: 'Metasound + uncompressed WAV/FLAC',
-    torchboundEquivalentSize: '500+ MB (~40x larger)',
-    pros: 'Photorealistic lighting, Nanite, Lumen',
-    cons: 'Extreme disk and RAM footprint, completely unsuitable for micro-games',
+    builtInAudioFormat: 'WAV / OGG samples (30 MB)',
+    torchboundEquivalentSize: '48 MB minimum',
+    pros: 'Much leaner than Unity, open source, dedicated 2D node pipeline.',
+    cons: 'Still bundles 40MB+ engine binary compared to Neutralino’s 1.15MB.'
   },
   {
-    name: 'Godot Engine (Standard Export)',
-    runtimeType: 'C++ lightweight game engine',
-    typicalBaseSize: '35 MB – 70 MB',
-    sizeMB: 48,
+    name: 'Unreal Engine 5 (Paper2D)',
+    sizeMB: 380.0,
+    runtimeType: 'C++ Heavyweight Engine',
     bundledChromium: false,
-    builtInAudioFormat: 'Sample-based audio (WAV/OGG)',
-    torchboundEquivalentSize: '62 MB (~5x larger)',
-    pros: 'Lightweight compared to Unity, free & open source',
-    cons: 'Still ships complete scene graph, physics, and renderer binaries',
-  },
-  {
-    name: 'Tauri (Rust + OS WebView)',
-    runtimeType: 'Rust native wrapper + OS WebView',
-    typicalBaseSize: '8 MB – 15 MB',
-    sizeMB: 12,
-    bundledChromium: false,
-    builtInAudioFormat: 'Web Audio API',
-    torchboundEquivalentSize: '24 MB',
-    pros: 'Very low memory, modern Rust backend',
-    cons: 'Slightly larger binary than Neutralino due to Rust runtime libraries',
-  },
+    builtInAudioFormat: 'MetaSound Audio Banks (80 MB)',
+    torchboundEquivalentSize: '380 MB minimum',
+    pros: 'Industry-standard graphics, blueprints, nanite/lumen capabilities.',
+    cons: 'Extremely heavy for 2D games; huge base binary footprint.'
+  }
 ];
 
 export const CODE_SNIPPETS: CodeSnippet[] = [
   {
-    id: 'webview2-neutralino',
-    title: '1. Neutralinojs OS Bridge (Zero Embedded Chromium)',
-    category: 'Architecture & Packaging',
-    savedMegabytes: 'Saves ~175 MB',
-    description: 'Instead of bundling Google Chrome like Electron, Torchbound uses Neutralinojs to hook directly into Windows Edge WebView2.',
-    code: `// neutralino.config.json (inside Torchbound-Windows.zip)
-{
-  "applicationId": "com.torchbound.game",
-  "version": "2.2.0",
-  "defaultMode": "window",
-  "documentRoot": "/resources/",
-  "url": "/game.html",
-  "enableServer": true,
-  "window": {
-    "title": "Torchbound",
-    "width": 1280,
-    "height": 720,
-    "minWidth": 640,
-    "minHeight": 360,
-    "fullScreen": false,
-    "icon": "/icons/icon-512.png"
-  }
-}
-// Neutralino.exe is only 2.7 MB!
-// It connects via local localhost WebSocket IPC to control OS windows.`,
-    explanation: [
-      'Electron apps bundle an entire Chromium browser and Node.js binary (~180 MB).',
-      'Neutralinojs bundles ZERO browser binaries; it asks Windows to instantiate the WebView2 control that already exists on the user\'s PC.',
-      'Result: The launcher executable is just 1.15 MB compressed in the zip!',
-    ],
-  },
-  {
-    id: 'procedural-audio',
-    title: '2. Procedural Web Audio API (Zero Audio Files)',
-    category: 'Sound Design',
-    savedMegabytes: 'Saves ~30–80 MB',
-    description: 'Not a single MP3 or WAV file is shipped. All sword slashes, footfalls, monster roars, and dungeon hums are synthesized mathematically in real-time.',
-    code: `// Torchbound procedural audio synthesis snippet
-const AC = new (window.AudioContext || window.webkitAudioContext)();
-
-function playSlashSound() {
-  const osc = AC.createOscillator();
-  const gain = AC.createGain();
-  const filter = AC.createBiquadFilter();
-
-  osc.type = 'sawtooth';
-  // Rapid pitch drop (white-hot swing)
-  osc.frequency.setValueAtTime(650, AC.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(80, AC.currentTime + 0.12);
-
-  // Volume envelope
-  gain.gain.setValueAtTime(0.3, AC.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + 0.14);
-
-  osc.connect(gain);
-  gain.connect(AC.destination);
-  osc.start();
-  osc.stop(AC.currentTime + 0.15);
-}`,
-    explanation: [
-      'Normal games bundle folders of .wav or .ogg samples for every attack, footstep, spell, and monster grunt.',
-      'Torchbound synthesizes all sounds mathematically with oscillators, white noise generators, and bandpass filters.',
-      'Cost in file size: 0.00 megabytes of audio assets!',
-    ],
-  },
-  {
-    id: 'rle-sprites',
-    title: '3. Base64 Run-Length Encoded Pixel Art Spritesheets',
-    category: 'Art & Graphics',
-    savedMegabytes: 'Saves ~20–50 MB',
-    description: 'Instead of huge PNG texture atlases, all sprites and font bitmaps are encoded in a single ultra-dense Base64 RLE string.',
-    code: `// Header of Torchbound's game.html:
-const SPRITE_DATA = 'ICAQEBAQIDAgICAhL/AQHT0wH/GRcXR0cXGfwc/BwXEgH+Gx/+FBsYG/77GwX+J/kg8QAAgAEACAAaAAANDAACAgICAgICAgIDAgKBAR3+ggUbGhv+HTKAC/4UFSwrPz0//kIoAACAAQAIABQAAAkIAQICAgICAgICCP8B/xkXGfwcFwjtCQcJ7fAW4AAAgAEACAAQAAAHBgECAgICAgIG/hwB/xsaGgbg4wkHCfAAAIABAAgAHgAADw4AAgICAgICAgICAgICAgOCAf4dgQcbGhsd/hobMg7GxdnX7vAFBAXBwtzaxQAA...';
-
-// Sprite palettes are recolored dynamically via color math:
-function shade(hex, f) {
-  const [r, g, b] = hexRGB(hex);
-  return f >= 0 
-    ? rgbHex(r + (255 - r) * f, g + (255 - g) * f, b + (255 - b) * f) 
-    : rgbHex(r * (1 + f), g * (1 + f), b * (1 + f));
-}`,
-    explanation: [
-      'Sprites are decoded on startup into offscreen HTML5 Canvases.',
-      'Dynamic tinting: Instead of creating 50 separate sprite PNGs for different enemy tiers or armor colors, one template sprite is recolored at runtime using arithmetic color mixing.',
-      'Zero external texture files or texture compression artifacts.',
-    ],
-  },
-  {
-    id: 'procedural-lighting',
-    title: '4. Dynamic Canvas Darkness Mask & Torchlight',
-    category: 'Rendering & Atmosphere',
-    savedMegabytes: 'Saves ~15–30 MB',
-    description: 'No 3D lighting engines, shader packages, or baked lightmaps are used. The dark dungeon atmosphere is drawn using 2D canvas composite operations.',
-    code: `// Dynamic darkness and torch radiance rendering
-function renderLighting(ctx, playerX, playerY, torches) {
-  // 1. Draw pitch-black darkness over viewport
-  ctx.fillStyle = 'rgba(11, 10, 16, 0.94)';
-  ctx.fillRect(0, 0, width, height);
-
-  // 2. Cut holes in darkness using destination-out
-  ctx.globalCompositeOperation = 'destination-out';
-  
-  // Torch flicker using math
-  const flicker = Math.sin(Date.now() * 0.01) * 3 + Math.cos(Date.now() * 0.023) * 2;
-  const radius = 120 + flicker;
-
-  const grad = ctx.createRadialGradient(playerX, playerY, 15, playerX, playerY, radius);
-  grad.addColorStop(0, 'rgba(0,0,0,1)');
-  grad.addColorStop(0.6, 'rgba(0,0,0,0.85)');
-  grad.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.arc(playerX, playerY, radius, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.globalCompositeOperation = 'source-over'; // restore
-}`,
-    explanation: [
-      'Canvas 2D "destination-out" blending carves light directly out of a dark overlay canvas.',
-      'High-performance 60 FPS lighting without Three.js, WebGL shaders, or heavy post-processing libraries.',
-    ],
-  },
-  {
-    id: 'procedural-dungeons',
-    title: '5. Mulberry32 PRNG & Hash-Based Dungeon Carver',
-    category: 'World Generation',
-    savedMegabytes: 'Saves ~40–100 MB',
-    description: 'No level mesh files, tilemap JSONs, or pre-built maps. Infinite dungeon floors are generated from a 32-bit integer seed.',
-    code: `// Torchbound's custom Mulberry32 / SplitMix deterministic PRNG
-function RNG(seed) {
-  let s = seed >>> 0 || 1;
-  const r = () => {
-    s |= 0;
-    s = s + 0x6D2B79F5 | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = t + Math.imul(t ^ (t >>> 7), 61 | t) ^ t;
+    id: 'mulberry32',
+    title: 'Deterministic Mulberry32 PRNG (Level Generator)',
+    category: 'ProcGen',
+    savedMegabytes: 'Saves 25 MB of Level JSONs',
+    code: `// Deterministic 32-bit PRNG carves identical dungeons across multiplayer peers
+function mulberry32(seed) {
+  return function() {
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-  r.int = (a, b) => Math.floor(a + r() * (b - a + 1));
-  r.pick = arr => arr[Math.floor(r() * arr.length)];
-  return r;
 }
 
-// Coordinate hash for local decor and tile variants
-function hash2(x, y, s) {
-  let h = (x * 374761393 + y * 668265263 + (s || 0) * 982451653) | 0;
-  h = Math.imul(h ^ (h >>> 13), 1274126177);
-  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+// Generate coordinate hash for endless dungeon rooms
+function hash2(x, y, seed) {
+  const n = Math.sin(x * 12.9898 + y * 78.233 + seed) * 43758.5453;
+  return n - Math.floor(n);
 }`,
     explanation: [
-      'Infinite dungeon floor plans, wall decorations, mob distributions, and loot chests are derived mathematically on the fly.',
-      'Seed-based determinism means co-op multiplayer peers generate the exact same map locally without transferring megabytes of map data over the wire!',
-    ],
+      'Replaces multi-megabyte tilemap files with 15 lines of pure mathematical code.',
+      'Peers in multiplayer co-op pass only an integer seed over WebRTC DataChannels.',
+      'Both players generate the exact same room layouts, traps, and boss spawns locally.'
+    ]
   },
   {
-    id: 'webrtc-coop',
-    title: '6. Serverless Host-Authoritative WebRTC Co-op',
-    category: 'Networking',
-    savedMegabytes: 'Saves ~50 MB',
-    description: 'No dedicated game server executables or heavy multiplayer network libraries. Players connect directly via peer-to-peer WebRTC DataChannels.',
-    code: `// WebRTC peer-to-peer multiplayer with embedded PeerJS
-const peer = new Peer({
-  // Lightweight STUN/turn handshake
-  config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }
-});
+    id: 'audio-synth',
+    title: 'Web Audio Procedural Sound Synthesis',
+    category: 'Audio',
+    savedMegabytes: 'Saves 80 MB of Audio Samples',
+    code: `// Zero audio files shipped: Synthesize sword slash mathematically
+function playSwordSlash(audioCtx) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
 
-// The host browser runs the authoritative physics/AI simulation:
-conn.on('data', (packet) => {
-  // Input packets are tiny binary/compact JSON objects:
-  // e.g. { t: 'in', dx: 1, dy: 0, a: 1 } (under 30 bytes!)
-  applyPlayerInput(remotePlayerId, packet);
-});`,
+  osc.type = 'sawtooth';
+  // Rapid frequency down-sweep from 750Hz to 80Hz in 120ms
+  osc.frequency.setValueAtTime(750, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.12);
+
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(3200, audioCtx.currentTime);
+  filter.frequency.linearRampToValueAtTime(400, audioCtx.currentTime + 0.12);
+
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+
+  osc.connect(filter).connect(gain).connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.12);
+}`,
     explanation: [
-      'Eliminates dedicated game server dependencies and heavy RPC frameworks.',
-      'State synchronization is handled directly between browser peers via low-latency UDP-based RTCDataChannels.',
-    ],
+      'Generates instantaneous sound effects directly from mathematical formulas.',
+      'Zero HTTP requests and zero disk I/O latency for footsteps, attacks, and hits.',
+      'Saves over 80 MB of uncompressed audio assets in the final distribution.'
+    ]
   },
+  {
+    id: 'lighting-mask',
+    title: 'Canvas 2D Darkness Punching (destination-out)',
+    category: 'Lighting',
+    savedMegabytes: 'Saves 15 MB Shader Pipelines',
+    code: `// Render torchlight flicker with zero GPU shader packages
+function renderLighting(ctx, width, height, player, tick) {
+  // 1. Paint pitch black dungeon darkness over the screen
+  ctx.fillStyle = 'rgba(7, 5, 12, 0.94)';
+  ctx.fillRect(0, 0, width, height);
+
+  // 2. Punch holes in darkness using destination-out blend mode
+  ctx.globalCompositeOperation = 'destination-out';
+
+  // 3. Flame flicker formula: sin wave modulation
+  const flicker = Math.sin(tick * 0.1) * 3 + Math.cos(tick * 0.07) * 2;
+  const radius = player.torchRadius + flicker;
+
+  const grad = ctx.createRadialGradient(
+    player.x, player.y, 10,
+    player.x, player.y, radius
+  );
+  grad.addColorStop(0, 'rgba(0, 0, 0, 1)');
+  grad.addColorStop(0.6, 'rgba(0, 0, 0, 0.85)');
+  grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(player.x, player.y, radius, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Reset composite operation for normal UI rendering
+  ctx.globalCompositeOperation = 'source-over';
+}`,
+    explanation: [
+      'Utilizes native 2D canvas blend modes to punch out light cones.',
+      'Sine and cosine wave combinations emulate organic torch fire flickering.',
+      'Eliminates need for heavy normal maps, shadow caster libraries, or custom WebGL shaders.'
+    ]
+  },
+  {
+    id: 'neutralino-config',
+    title: 'Neutralinojs Desktop Configuration (neutralino.config.json)',
+    category: 'Packaging',
+    savedMegabytes: 'Saves 180 MB Electron Overhead',
+    code: `{
+  "applicationId": "com.torchbound.game",
+  "version": "2.5.1",
+  "defaultMode": "window",
+  "port": 0,
+  "url": "/resources/game.html",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "modes": {
+    "window": {
+      "title": "Torchbound",
+      "width": 1280,
+      "height": 720,
+      "minWidth": 800,
+      "minHeight": 600,
+      "fullScreen": false,
+      "borderless": false,
+      "maximize": false
+    }
+  }
+}`,
+    explanation: [
+      'Zero Chromium bundling: neutralino.config.json tells the OS to run the native WebView2 instance.',
+      'Saves player states directly to local directory without heavyweight database or node dependencies.',
+      'Compiles to a lightweight ~1.15 MB executable zip instead of a 180MB+ installer.'
+    ]
+  }
 ];

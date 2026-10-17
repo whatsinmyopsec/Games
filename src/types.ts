@@ -10,7 +10,7 @@ export interface ZipFileEntry {
 export interface EngineComparisonItem {
   name: string;
   runtimeType: string;
-  typicalBaseSize: string;
+  typicalBaseSize?: string;
   sizeMB: number;
   bundledChromium: boolean;
   builtInAudioFormat: string;
@@ -24,7 +24,7 @@ export interface CodeSnippet {
   title: string;
   category: string;
   savedMegabytes: string;
-  description: string;
+  description?: string;
   code: string;
   explanation: string[];
 }

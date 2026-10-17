@@ -1,0 +1,40 @@
+name: Check Game Releases & Auto-Update
+
+on:
+  schedule:
+    # Run every day at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch Latest Torchbound Release Info
+        id: check_release
+        run: |
+          LATEST_VERSION=$(curl -sL https://torchbound-duk.pages.dev/version.json | jq -r '.version // empty')
+          echo "Latest Torchbound Version: $LATEST_VERSION"
+          echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build site
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
