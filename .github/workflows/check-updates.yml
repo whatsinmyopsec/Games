@@ -2,7 +2,7 @@ name: Check Game Releases & Auto-Update
 
 on:
   schedule:
-    # Run every day at 00:00 UTC
+    # Run daily at 00:00 UTC
     - cron: '0 0 * * *'
   workflow_dispatch:
 
@@ -11,30 +11,78 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
 jobs:
   check-and-update:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Fetch Latest Torchbound Release Info
+      - name: Fetch Latest Upstream Release Info
         id: check_release
         run: |
-          LATEST_VERSION=$(curl -sL https://torchbound-duk.pages.dev/version.json | jq -r '.version // empty')
-          echo "Latest Torchbound Version: $LATEST_VERSION"
-          echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          UPSTREAM_VERSION=$(curl -sL https://torchbound-duk.pages.dev/version.json | jq -r '.version // empty')
+          echo "Upstream Torchbound Version: $UPSTREAM_VERSION"
+          CURRENT_VERSION=$(grep -o "version: '[^']*'" src/data/torchboundData.ts | head -1 | cut -d"'" -f2)
+          echo "Current Repository Version: $CURRENT_VERSION"
+
+          if [ -n "$UPSTREAM_VERSION" ] && [ "$UPSTREAM_VERSION" != "$CURRENT_VERSION" ]; then
+            echo "New version detected: $UPSTREAM_VERSION (was $CURRENT_VERSION)"
+            echo "has_update=true" >> $GITHUB_OUTPUT
+            echo "new_version=$UPSTREAM_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "Already up-to-date at version: $CURRENT_VERSION"
+            echo "has_update=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Data File & Create GitHub Release if New Version
+        if: steps.check_release.outputs.has_update == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VER="${{ steps.check_release.outputs.new_version }}"
+          echo "Updating src/data/torchboundData.ts to version $NEW_VER..."
+          sed -i "s/version: '[^']*'/version: '$NEW_VER'/" src/data/torchboundData.ts
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/torchboundData.ts
+          git commit -m "chore(auto-update): bump Torchbound to v$NEW_VER"
+          git push origin main
+
+          # Create a GitHub Release for the new version
+          gh release create "v$NEW_VER" \
+            --title "Torchbound v$NEW_VER Release Update" \
+            --notes "Automated release update: Torchbound updated upstream to v$NEW_VER. Live app recompiled and deployed at https://whatsinmyopsec.github.io/Games/" || true
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Build site
+      - name: Build static site
         run: npm run build
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
