@@ -61,7 +61,7 @@ export default function App() {
                   }`}
                 >
                   <Flame className="h-4 w-4" />
-                  <span>1. Torchbound (2D RPG &middot; 13.2MB / 1.01MB)</span>
+                  <span>1. Torchbound (2D RPG &middot; 1.7MB / 1.01MB)</span>
                 </button>
 
                 <button
@@ -102,17 +102,16 @@ export default function App() {
               <div className="rounded-2xl border border-amber-500/40 bg-radial from-amber-950/40 to-stone-950 p-6 space-y-4">
                 <div className="flex items-center gap-2 text-amber-400 font-mono text-xs font-semibold uppercase tracking-wider">
                   <CheckCircle2 className="h-4 w-4 text-amber-400" />
-                  <span>Direct Answer: How Torchbound Fits In Just 13 Megabytes</span>
+                  <span>Direct Answer: How Torchbound Fits In Just 1.7 Megabytes</span>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-4 text-xs sm:text-sm text-stone-300">
                   <div className="bg-stone-900/80 p-4 rounded-xl border border-stone-800 space-y-1.5">
                     <span className="font-mono text-amber-300 font-bold block text-sm">
-                      1. 89% Is Just Video Cutscenes
+                      1. Cutscenes Decoupled (87% Size Drop)
                     </span>
                     <p className="text-stone-400 leading-relaxed">
-                      Of the 13.2 MB zip, <strong>12.3 MB is two MP4 video cutscenes</strong> (<code className="text-stone-300 font-mono">intro.mp4</code>). 
-                      The entire game program itself is <strong>only 1.01 MB</strong>.
+                      Originally a 13.2 MB zip with 12.3 MB of MP4 cutscenes, the current release decoupled video into streamed media, reducing the Windows zip to <strong>1.7 MB</strong>. The actual game code is <strong>only 1.01 MB</strong>.
                     </p>
                   </div>
 

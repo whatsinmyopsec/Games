@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
             </h1>
 
             <p className="max-w-3xl text-stone-300 text-sm sm:text-base leading-relaxed">
-              While modern PC titles demand 50 GB to 150 GB of disk space and even simple indie games balloon past 500 MB due to engine bloat, web masterpieces like <strong className="text-amber-300 font-semibold">Torchbound</strong> (now just <strong>1.6 MB zip</strong> in v{liveVersion}) and <strong className="text-rose-300 font-semibold">Dungen Doom</strong> (3D FPS, 357 KB transfer) deliver complete multiplayer and retro 3D experiences in the space of a single photo. How is this possible?
+              While modern PC titles demand 50 GB to 150 GB of disk space and even simple indie games balloon past 500 MB due to engine bloat, web masterpieces like <strong className="text-amber-300 font-semibold">Torchbound</strong> (now just <strong>{TORCHBOUND_STATS.downloadZipSizeMB} MB zip</strong> in v{liveVersion}) and <strong className="text-rose-300 font-semibold">Dungen Doom</strong> (3D FPS, 357 KB transfer) deliver complete multiplayer and retro 3D experiences in the space of a single photo. How is this possible?
             </p>
           </div>
 
@@ -77,7 +77,7 @@ export const Header: React.FC = () => {
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-amber-500/40 bg-amber-600/20 px-4 py-2.5 text-sm font-medium text-amber-200 hover:bg-amber-600/30 hover:border-amber-400 transition shadow-lg shadow-amber-950/40"
             >
               <Flame className="h-4 w-4 text-amber-400" />
-              <span>Download Torchbound v{liveVersion} (1.6MB Zip)</span>
+              <span>Download Torchbound v{liveVersion} ({TORCHBOUND_STATS.downloadZipSizeMB}MB Zip)</span>
               <ExternalLink className="h-3.5 w-3.5 opacity-70" />
             </a>
 
@@ -101,8 +101,8 @@ export const Header: React.FC = () => {
               <Flame className="h-4 w-4 text-amber-400" />
               <span>Torchbound Download</span>
             </div>
-            <div className="mt-1 text-2xl font-bold text-amber-200 font-mono">1.6 MB Zip</div>
-            <div className="text-[11px] text-emerald-400 mt-0.5">88% drop from 13.2 MB in v2.5.1!</div>
+            <div className="mt-1 text-2xl font-bold text-amber-200 font-mono">{TORCHBOUND_STATS.downloadZipSizeMB} MB Zip</div>
+            <div className="text-[11px] text-emerald-400 mt-0.5">{TORCHBOUND_STATS.optimizationDropPercentage}</div>
           </div>
 
           <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3.5 backdrop-blur">

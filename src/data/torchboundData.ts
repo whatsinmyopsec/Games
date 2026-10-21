@@ -1,11 +1,12 @@
 import { ZipFileEntry, EngineComparisonItem, CodeSnippet } from '../types';
 
 export const TORCHBOUND_STATS = {
-  version: '2.5.1',
-  previousVersion: '2.2.0',
-  downloadZipSizeMB: 1.6,
+  version: '2.9.0',
+  previousVersion: '2.5.1',
+  historicalVersion: '2.2.0',
+  downloadZipSizeMB: 1.7,
   previousZipSizeMB: 13.2,
-  downloadZipSizeBytes: 1657358, // 1.58 MB (~1.6 MB)
+  downloadZipSizeBytes: 1654006, // 1.65 MB (~1.7 MB)
   gameHtmlSizeBytes: 1035520, // 1.01 MB
   gameHtmlGzipSizeBytes: 298400, // ~291 KB over Cloudflare brotli/gzip
   executableCompressedMB: 1.15,
@@ -14,15 +15,15 @@ export const TORCHBOUND_STATS = {
   audioFilesCount: 0,
   textureAtlasesCount: 0,
   dungeonGeometryFilesCount: 0,
-  optimizationDropPercentage: '88% size reduction (13.2 MB → 1.6 MB)',
+  optimizationDropPercentage: '87% size reduction (13.2 MB → 1.7 MB)',
 };
 
 export const TORCHBOUND_VERSION_HISTORY = [
   {
-    version: '2.5.1',
-    date: 'October 2026 (Latest Release)',
-    zipSizeMB: 1.6,
-    summary: 'Streamed/decoupled opening video cutscenes and bundled assets into resources.neu. Download dropped from 13.2 MB to 1.6 MB (88% reduction)!',
+    version: '2.9.0',
+    date: 'Latest Release',
+    zipSizeMB: 1.7,
+    summary: 'Self-updating desktop build with streamlined asset manifest and WebView2 desktop integration. Download package is 1.7 MB zip.',
     breakdown: [
       { name: 'Torchbound.exe', size: '2.74 MB (1.15 MB zipped)', desc: 'Neutralinojs runtime binary using OS Edge WebView2' },
       { name: 'resources.neu', size: '1.23 MB (480 KB zipped)', desc: 'Full game engine, HTML5 canvas, sound synth, WebRTC co-op' },
@@ -30,8 +31,18 @@ export const TORCHBOUND_VERSION_HISTORY = [
     ]
   },
   {
+    version: '2.5.1',
+    date: 'Previous Release',
+    zipSizeMB: 1.6,
+    summary: 'Streamed/decoupled opening video cutscenes and bundled assets into resources.neu.',
+    breakdown: [
+      { name: 'Torchbound.exe', size: '2.74 MB (1.15 MB zipped)', desc: 'Neutralinojs runtime binary' },
+      { name: 'resources.neu', size: '1.23 MB', desc: 'Packed game assets' },
+    ]
+  },
+  {
     version: '2.2.0',
-    date: 'Earlier Release',
+    date: 'Historical Baseline',
     zipSizeMB: 13.2,
     summary: 'Bundled two pre-rendered video cutscenes (intro.mp4 + intro_mobile.mp4 = 12.3 MB). Proved our case study thesis that 89% of the archive was just video!',
     breakdown: [

@@ -78,7 +78,7 @@ export const ZipInspector: React.FC = () => {
                 : 'text-stone-400 hover:text-stone-200'
             }`}
           >
-            Latest v2.5.1 (1.6 MB Zip)
+            Latest v{TORCHBOUND_STATS.version} ({TORCHBOUND_STATS.downloadZipSizeMB} MB Zip)
           </button>
           <button
             onClick={() => {
@@ -101,11 +101,11 @@ export const ZipInspector: React.FC = () => {
         <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 text-xs sm:text-sm text-stone-300 space-y-2">
           <div className="flex items-center gap-2 font-semibold text-emerald-300">
             <Sparkles className="h-4 w-4 shrink-0 text-emerald-400" />
-            <span>Latest v2.5.1 Update: 88% Archive Reduction!</span>
+            <span>Latest v{TORCHBOUND_STATS.version} Release: 87% Archive Reduction!</span>
           </div>
           <p className="leading-relaxed">
-            In the latest release (v2.5.1), Torchbound decoupled the opening MP4 video cutscenes and bundled all game code into <code className="text-emerald-200 font-mono">resources.neu</code>. 
-            The Windows desktop download plummeted from <strong>13.2 MB down to just 1.6 MB</strong>, completely validating the findings of this case study!
+            In the latest release (v{TORCHBOUND_STATS.version}), Torchbound decoupled the opening MP4 video cutscenes and bundled all game code into <code className="text-emerald-200 font-mono">resources.neu</code>. 
+            The Windows desktop download plummeted from <strong>13.2 MB down to just {TORCHBOUND_STATS.downloadZipSizeMB} MB</strong>, completely validating the findings of this case study!
           </p>
         </div>
       ) : (
@@ -123,7 +123,7 @@ export const ZipInspector: React.FC = () => {
       {/* Visual Proportional Storage Bar / Treemap */}
       <div className="space-y-2">
         <div className="flex justify-between items-center text-xs text-stone-400 font-mono">
-          <span>Proportional Storage Footprint ({selectedVersion === 'current' ? 'v2.5.1' : 'v2.2.0'})</span>
+          <span>Proportional Storage Footprint ({selectedVersion === 'current' ? `v${TORCHBOUND_STATS.version}` : 'v2.2.0'})</span>
           <span>Total: {(totalBytes / (1024 * 1024)).toFixed(2)} MB Uncompressed</span>
         </div>
 

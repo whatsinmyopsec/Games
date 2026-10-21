@@ -11,6 +11,7 @@ import {
   Play
 } from 'lucide-react';
 import { playProceduralSound } from '../services/proceduralAudio';
+import { TORCHBOUND_STATS } from '../data/torchboundData';
 
 const TILE_SIZE = 24;
 const GRID_W = 20;
@@ -28,8 +29,16 @@ function mulberry32(seed: number) {
 
 export const DungeonLightingSandbox: React.FC = () => {
   const [activeView, setActiveView] = useState<'actual-game' | 'tech-sandbox'>('actual-game');
+  const [liveVersion, setLiveVersion] = useState<string>(TORCHBOUND_STATS.version);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    fetch('https://torchbound-duk.pages.dev/version.json', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(d => { if (d?.version) setLiveVersion(d.version); })
+      .catch(() => {});
+  }, []);
 
   // Technical Sandbox State
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -329,7 +338,7 @@ export const DungeonLightingSandbox: React.FC = () => {
             <div className="flex items-center justify-between bg-stone-950/95 px-4 py-2.5 border-b border-stone-800 text-xs font-mono">
               <div className="flex items-center gap-2">
                 <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-bold text-amber-300">Torchbound v2.2.0 Live Game</span>
+                <span className="font-bold text-amber-300">Torchbound v{liveVersion} Live Game</span>
                 <span className="text-stone-500">|</span>
                 <span className="text-emerald-400 font-semibold hidden sm:inline">Payload: 1.01 MB (~298 KB Gzip)</span>
               </div>
