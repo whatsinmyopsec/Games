@@ -1,7 +1,7 @@
 import { ZipFileEntry, EngineComparisonItem, CodeSnippet } from '../types';
 
 export const TORCHBOUND_STATS = {
-  version: '2.9.2',
+  version: '2.9.5',
   previousVersion: '2.5.1',
   historicalVersion: '2.2.0',
   downloadZipSizeMB: 1.7,
@@ -20,7 +20,7 @@ export const TORCHBOUND_STATS = {
 
 export const TORCHBOUND_VERSION_HISTORY = [
   {
-    version: '2.9.2',
+    version: '2.9.5',
     date: 'Latest Release',
     zipSizeMB: 1.7,
     summary: 'Self-updating desktop build with streamlined asset manifest and WebView2 desktop integration. Download package is 1.7 MB zip.',
@@ -31,7 +31,7 @@ export const TORCHBOUND_VERSION_HISTORY = [
     ]
   },
   {
-    version: '2.9.2',
+    version: '2.9.5',
     date: 'Previous Release',
     zipSizeMB: 1.6,
     summary: 'Streamed/decoupled opening video cutscenes and bundled assets into resources.neu.',
@@ -41,7 +41,7 @@ export const TORCHBOUND_VERSION_HISTORY = [
     ]
   },
   {
-    version: '2.9.2',
+    version: '2.9.5',
     date: 'Historical Baseline',
     zipSizeMB: 13.2,
     summary: 'Bundled two pre-rendered video cutscenes (intro.mp4 + intro_mobile.mp4 = 12.3 MB). Proved our case study thesis that 89% of the archive was just video!',
