@@ -43,11 +43,11 @@ export const DungenDoomView: React.FC = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-100 font-serif">
-              How Does a 3D Retro FPS Fit in <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-300 to-yellow-400">357 KB?</span>
+              How Does a 3D Retro FPS Fit in <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-300 to-yellow-400">{DUNGEN_DOOM_STATS.bundleGzipKB} KB?</span>
             </h2>
 
             <p className="max-w-2xl text-stone-300 text-sm sm:text-base leading-relaxed">
-              At <code className="text-rose-300 bg-stone-900 px-1.5 py-0.5 rounded border border-stone-800 text-xs">kivylius.com/games/dungen-doom/</code>, players enter a complete 3D retro dungeon crawler with first-person perspective, raycasted physics, monster AI, shotgun combat, and dynamic torch illumination—yet the entire network transfer weighs <strong className="text-rose-400 font-semibold">less than 360 KB</strong>.
+              At <code className="text-rose-300 bg-stone-900 px-1.5 py-0.5 rounded border border-stone-800 text-xs">kivylius.com/games/dungen-doom/</code>, players enter a complete 3D retro dungeon crawler with first-person perspective, raycasted physics, monster AI, shotgun combat, and dynamic torch illumination—yet the entire JS bundle transfer weighs <strong className="text-rose-400 font-semibold">just {DUNGEN_DOOM_STATS.bundleGzipKB} KB gzipped</strong>.
             </p>
           </div>
 
@@ -67,10 +67,10 @@ export const DungenDoomView: React.FC = () => {
           <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3.5 backdrop-blur">
             <div className="flex items-center gap-2 text-stone-400 text-xs font-mono">
               <Zap className="h-4 w-4 text-rose-400" />
-              <span>Network Transfer</span>
+              <span>JS Network Transfer</span>
             </div>
-            <div className="mt-1 text-2xl font-bold text-rose-300 font-mono">357 KB</div>
-            <div className="text-[11px] text-stone-400 mt-0.5">Gzip transfer size</div>
+            <div className="mt-1 text-2xl font-bold text-rose-300 font-mono">{DUNGEN_DOOM_STATS.bundleGzipKB} KB</div>
+            <div className="text-[11px] text-stone-400 mt-0.5">Gzip size ({DUNGEN_DOOM_STATS.totalTransferKB} KB w/ CSS)</div>
           </div>
 
           <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3.5 backdrop-blur">
@@ -78,8 +78,8 @@ export const DungenDoomView: React.FC = () => {
               <Cpu className="h-4 w-4 text-amber-400" />
               <span>Uncompressed JS</span>
             </div>
-            <div className="mt-1 text-2xl font-bold text-amber-300 font-mono">1.22 MB</div>
-            <div className="text-[11px] text-stone-400 mt-0.5">Three.js + game + generator</div>
+            <div className="mt-1 text-2xl font-bold text-amber-300 font-mono">{DUNGEN_DOOM_STATS.bundleSizeMB} MB</div>
+            <div className="text-[11px] text-stone-400 mt-0.5">{DUNGEN_DOOM_STATS.bundleName}</div>
           </div>
 
           <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3.5 backdrop-blur">
@@ -94,10 +94,10 @@ export const DungenDoomView: React.FC = () => {
           <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3.5 backdrop-blur">
             <div className="flex items-center gap-2 text-stone-400 text-xs font-mono">
               <Layers className="h-4 w-4 text-cyan-400" />
-              <span>Texture Atlases</span>
+              <span>CanvasTextures</span>
             </div>
-            <div className="mt-1 text-2xl font-bold text-cyan-300 font-mono">0 Bytes</div>
-            <div className="text-[11px] text-stone-400 mt-0.5">Procedural CanvasTextures</div>
+            <div className="mt-1 text-2xl font-bold text-cyan-300 font-mono">{DUNGEN_DOOM_STATS.proceduralTextureCount} Keys</div>
+            <div className="text-[11px] text-stone-400 mt-0.5">Generated in offscreen Canvas</div>
           </div>
         </div>
       </div>
@@ -116,7 +116,7 @@ export const DungenDoomView: React.FC = () => {
               </h3>
             </div>
             <p className="text-xs sm:text-sm text-stone-400 mt-1">
-              How Kivylius bypassed standard 3D game engine bloat to fit a 3D FPS into 357 KB
+              How Kivylius bypassed standard 3D game engine bloat to fit a 3D FPS into {DUNGEN_DOOM_STATS.bundleGzipKB} KB
             </p>
           </div>
         </div>
@@ -195,7 +195,7 @@ export const DungenDoomView: React.FC = () => {
         <div className="flex items-center gap-2 border-b border-stone-800 pb-4">
           <HardDrive className="h-5 w-5 text-rose-400" />
           <h3 className="text-xl font-bold text-stone-100 font-serif">
-            Byte Breakdown: Inside the 1.22 MB JavaScript Bundle
+            Byte Breakdown: Inside the {DUNGEN_DOOM_STATS.bundleSizeMB} MB JavaScript &amp; CSS Bundle
           </h3>
         </div>
 

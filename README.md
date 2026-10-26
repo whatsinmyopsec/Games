@@ -36,20 +36,22 @@ Software development is a journey of trial, error, and occasional clumsy oversig
 
 Despite the stumbling blocks above, here is how the two featured games achieve extreme miniaturization:
 
-| Feature | Torchbound (2D RPG v2.5.1) | Dungen Doom (3D Retro FPS) | Conventional Game |
+| Feature | Torchbound (2D RPG v3.0.7) | Dungen Doom (3D Retro FPS) | Conventional Game |
 | :--- | :--- | :--- | :--- |
-| **Download Zip** | **1.6 MB Zip** (was 13.2 MB) | N/A (Web App) | 500 MB – 5 GB |
-| **Initial Transfer** | ~298 KB gzipped | ~357 KB gzipped | 100 MB – 2 GB |
+| **Download Zip** | **2.1 MB Zip** (was 13.2 MB) | N/A (Web App) | 500 MB – 5 GB |
+| **Initial Transfer** | **868 KB gzipped** (`2.08 MB` HTML) | **422 KB gzipped** (`1.44 MB` JS) | 100 MB – 2 GB |
 | **3D / 2D Engine** | HTML5 Canvas 2D (`destination-out`) | Three.js WebGL + 2.5D Billboards | Unity / Unreal Engine |
-| **Textures** | Base64 RLE pixel strings | Procedural `THREE.CanvasTexture` in memory | 50 MB+ PNG/DDS atlases |
-| **Audio** | 100% Procedural Web Audio oscillators | On-demand 2KB Kenney micro-samples | 50 MB+ WAV/OGG files |
+| **Textures** | Procedural pixel art + palette math | 55 Procedural `THREE.CanvasTexture` keys | 50 MB+ PNG/DDS atlases |
+| **Audio** | Web Audio synth + 558 KB Base64 MP3 SFX | On-demand 2KB Kenney micro-samples | 50 MB+ WAV/OGG files |
 | **3D Models** | N/A (2D grid) | 0 bytes (camera-facing quad sprites) | 20 MB+ rigged FBX meshes |
 
 ---
 
-## The v2.5.1 Release Update (13.2 MB → 1.6 MB)
+## Release Evolution: 13.2 MB → 1.6 MB → 2.1 MB (v3.0.7)
 
-In the latest release of Torchbound (**v2.5.1**), the developer decoupled the two pre-rendered MP4 video cutscenes and bundled the game into `resources.neu`. The Windows zip shrank from **13.2 MB down to 1.6 MB**—an **88% reduction** that directly validated our study's findings!
+* **v2.2.0 (`13.2 MB Zip`)**: Bundled two pre-rendered MP4 video cutscenes (`12.3 MB` total, 89% of the zip).
+* **v2.5.1 (`1.6 MB Zip`)**: Replaced the MP4 videos with a real-time in-engine rendered cutscene and chiptune score, shrinking the download by **88%**.
+* **v3.0.7 (`2.1 MB Zip` / `2,129,462 bytes`)**: Added `558 KB` of inlined base64 MP3 CC0 enemy voice recordings (`V293_SFX`) and arcade weapon swings (`V301_SFX`), 6 attack abilities, PvP arena duels, and readable dungeon flow across 12,574 lines of JS (`2.08 MB` raw / `868 KB` gzipped).
 
 ---
 
@@ -67,35 +69,18 @@ Because these run in live viewports communicating directly with upstream edge ne
 - No local game binary mirrors are required, eliminating stale asset desynchronization.
 
 ### 2. Client-Side Real-Time Version Polling (`cache: 'no-store'`)
-The application header runs a dynamic React hook that queries Torchbound's official release manifest (`/version.json`):
-```typescript
-const checkLiveVersion = async () => {
-  const res = await fetch('https://torchbound-duk.pages.dev/version.json', { 
-    cache: 'no-store' // Bypasses browser cache
-  });
-  if (res.ok) {
-    const data = await res.json();
-    setLiveVersion(data.version); // Dynamically displays v2.5.1 in the UI
-  }
-};
-```
-- **Instant verification**: When visitors load the site, the browser requests the latest upstream manifest directly from Cloudflare Pages.
-- **Auto-polling**: Runs every 3 minutes while the tab is active, plus includes a manual refresh button (`↻`) for instant re-verification.
+The application header and playable embed run a dynamic React hook that queries Torchbound's official release manifest (`/version.json`) every 3 minutes with `cache: 'no-store'`.
 
-### 3. Automated Daily GitHub Actions Workflow (`check-updates.yml`)
-To keep the static distribution on GitHub Pages in sync with upstream changes:
-- **Cron Schedule**: Executes automatically every night at `00:00 UTC` (`0 0 * * *`).
-- **Manual Trigger**: Supports `workflow_dispatch` so maintainers can trigger an immediate rebuild with one click from GitHub's Actions tab.
-- **Workflow Pipeline**:
-  1. Boots an isolated Ubuntu runner on GitHub.
-  2. Queries `https://torchbound-duk.pages.dev/version.json` using `curl` and `jq`.
-  3. Rebuilds the production bundle (`npm run build`).
-  4. Automatically redeploys the fresh site to GitHub Pages via `actions/deploy-pages@v4`.
+### 3. Automated Daily File Analyzer & GitHub Action (`00:00 UTC` Reset)
+To keep all byte calculations, zip breakdowns, and bundle metrics synced automatically:
+- **Cron Schedule**: Resets and executes automatically every night at **`00:00 UTC`** (`0 0 * * *`).
+- **Automated Analyzer (`scripts/analyze_games.py`)**:
+  1. Downloads the live `version.json`, `index.html`, and `Torchbound-Windows.zip` from Torchbound, plus the latest `index-*.js` and `index-*.css` bundles from Dungen Doom.
+  2. Inspects the zip archive headers, measures uncompressed and gzip sizes, counts procedural texture keys, and updates `src/data/torchboundData.ts` and `src/data/dungenDoomData.ts`.
+  3. Commits any updated calculations, tags a new GitHub Release, compiles the production bundle (`npm run build`), and deploys to GitHub Pages.
 
 ### 4. Version Evolution & Historical Tracking
-Whenever a creator makes an architectural change (such as Torchbound's 88% zip reduction from 13.2 MB to 1.6 MB by decoupling video cutscenes):
-- The data layer tracks both **current** and **historical** breakdowns.
-- Visitors can use the interactive **Zip Inspector** toggle to compare file weights and packaging strategies between releases.
+The data layer tracks both **current** (`v3.0.7`) and **historical** (`v2.2.0`) breakdowns so visitors can use the interactive **Zip Inspector** toggle to compare file weights and packaging strategies across releases.
 
 ---
 

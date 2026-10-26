@@ -291,7 +291,7 @@ export const DungeonLightingSandbox: React.FC = () => {
           <div className="flex items-center gap-2">
             <Flame className="h-5 w-5 text-amber-400" />
             <h2 className="text-xl font-bold text-stone-100 font-serif">
-              Playable Torchbound Game (100% In-Browser &middot; 1.01 MB)
+              Playable Torchbound Game (100% In-Browser &middot; {TORCHBOUND_STATS.gameHtmlSizeMB} MB / {TORCHBOUND_STATS.gameHtmlGzipKB} KB Gzip)
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-stone-400 mt-1">
@@ -340,7 +340,7 @@ export const DungeonLightingSandbox: React.FC = () => {
                 <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="font-bold text-amber-300">Torchbound v{liveVersion} Live Game</span>
                 <span className="text-stone-500">|</span>
-                <span className="text-emerald-400 font-semibold hidden sm:inline">Payload: 1.01 MB (~298 KB Gzip)</span>
+                <span className="text-emerald-400 font-semibold hidden sm:inline">Payload: {TORCHBOUND_STATS.gameHtmlSizeMB} MB ({TORCHBOUND_STATS.gameHtmlGzipKB} KB Gzip &middot; {TORCHBOUND_STATS.pureEngineJsMB} MB Engine + {TORCHBOUND_STATS.inlinedSfxKB} KB Base64 SFX)</span>
               </div>
 
               <div className="flex items-center gap-2">

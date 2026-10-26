@@ -8,6 +8,8 @@ import { EngineComparison } from './components/EngineComparison';
 import { SourceCodeInspector } from './components/SourceCodeInspector';
 import { SizeCalculator } from './components/SizeCalculator';
 import { DungenDoomView } from './components/DungenDoomView';
+import { TORCHBOUND_STATS } from './data/torchboundData';
+import { DUNGEN_DOOM_STATS } from './data/dungenDoomData';
 import { 
   Flame, 
   Layers, 
@@ -30,7 +32,7 @@ export default function App() {
 
   const torchboundNavItems = [
     { id: 'all', label: 'Complete Overview', icon: <Flame className="h-4 w-4" /> },
-    { id: 'zip', label: '13.2MB Zip Anatomy', icon: <Layers className="h-4 w-4" /> },
+    { id: 'zip', label: `${TORCHBOUND_STATS.downloadZipSizeMB}MB Zip Anatomy`, icon: <Layers className="h-4 w-4" /> },
     { id: 'pillars', label: '5 Core Pillars', icon: <SlidersHorizontal className="h-4 w-4" /> },
     { id: 'audio', label: 'Procedural Audio Lab', icon: <Volume2 className="h-4 w-4" /> },
     { id: 'sandbox', label: 'Playable Lighting Sandbox', icon: <Gamepad2 className="h-4 w-4" /> },
@@ -61,7 +63,7 @@ export default function App() {
                   }`}
                 >
                   <Flame className="h-4 w-4" />
-                  <span>1. Torchbound (2D RPG &middot; 1.7MB / 1.01MB)</span>
+                  <span>1. Torchbound (2D RPG &middot; {TORCHBOUND_STATS.downloadZipSizeMB}MB Zip / {TORCHBOUND_STATS.gameHtmlGzipKB}KB Gzip)</span>
                 </button>
 
                 <button
@@ -73,7 +75,7 @@ export default function App() {
                   }`}
                 >
                   <Eye className="h-4 w-4" />
-                  <span>2. Dungen Doom (3D Retro FPS &middot; 357KB)</span>
+                  <span>2. Dungen Doom (3D Retro FPS &middot; {DUNGEN_DOOM_STATS.bundleGzipKB}KB)</span>
                 </button>
               </div>
             </div>
@@ -81,12 +83,12 @@ export default function App() {
             <div className="text-[11px] font-mono text-stone-400 hidden lg:flex items-center gap-3">
               <span className="flex items-center gap-1.5 text-amber-300">
                 <Zap className="h-3.5 w-3.5 text-amber-400" />
-                <span>Torchbound: 1.01MB Engine</span>
+                <span>Torchbound v{TORCHBOUND_STATS.version}: {TORCHBOUND_STATS.pureEngineJsMB}MB JS + {TORCHBOUND_STATS.inlinedSfxKB}KB SFX</span>
               </span>
               <span>&middot;</span>
               <span className="flex items-center gap-1.5 text-rose-300">
                 <Zap className="h-3.5 w-3.5 text-rose-400" />
-                <span>Dungen Doom: 357KB 3D FPS</span>
+                <span>Dungen Doom: {DUNGEN_DOOM_STATS.bundleGzipKB}KB 3D FPS</span>
               </span>
             </div>
           </div>
@@ -102,16 +104,16 @@ export default function App() {
               <div className="rounded-2xl border border-amber-500/40 bg-radial from-amber-950/40 to-stone-950 p-6 space-y-4">
                 <div className="flex items-center gap-2 text-amber-400 font-mono text-xs font-semibold uppercase tracking-wider">
                   <CheckCircle2 className="h-4 w-4 text-amber-400" />
-                  <span>Direct Answer: How Torchbound Fits In Just 1.7 Megabytes</span>
+                  <span>Direct Answer: How Torchbound v{TORCHBOUND_STATS.version} Fits In Just {TORCHBOUND_STATS.downloadZipSizeMB} Megabytes</span>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-4 text-xs sm:text-sm text-stone-300">
                   <div className="bg-stone-900/80 p-4 rounded-xl border border-stone-800 space-y-1.5">
                     <span className="font-mono text-amber-300 font-bold block text-sm">
-                      1. Cutscenes Decoupled (87% Size Drop)
+                      1. In-Engine Cutscene ({TORCHBOUND_STATS.optimizationDropPercentage})
                     </span>
                     <p className="text-stone-400 leading-relaxed">
-                      Originally a 13.2 MB zip with 12.3 MB of MP4 cutscenes, the current release decoupled video into streamed media, reducing the Windows zip to <strong>1.7 MB</strong>. The actual game code is <strong>only 1.01 MB</strong>.
+                      Originally a 13.2 MB zip with 12.3 MB of MP4 cutscenes, Torchbound replaced pre-rendered video with a real-time in-engine cutscene, shrinking the Windows zip to <strong>{TORCHBOUND_STATS.downloadZipSizeMB} MB</strong> ({TORCHBOUND_STATS.gameHtmlGzipKB} KB gzipped web HTML).
                     </p>
                   </div>
 
@@ -120,16 +122,16 @@ export default function App() {
                       2. Neutralinojs instead of Electron
                     </span>
                     <p className="text-stone-400 leading-relaxed">
-                      Torchbound does not package Google Chrome. It uses <strong>Neutralinojs</strong> with the user&apos;s existing <strong>Microsoft Edge WebView2</strong>, keeping the executable at just <strong>1.15 MB compressed</strong> instead of 180 MB.
+                      Torchbound does not package Google Chrome. It uses <strong>Neutralinojs</strong> with the user&apos;s existing <strong>Microsoft Edge WebView2</strong>, keeping the launcher at just <strong>{TORCHBOUND_STATS.executableCompressedMB} MB compressed</strong> instead of 180 MB.
                     </p>
                   </div>
 
                   <div className="bg-stone-900/80 p-4 rounded-xl border border-stone-800 space-y-1.5">
                     <span className="font-mono text-amber-300 font-bold block text-sm">
-                      3. 100% Procedural Generation
+                      3. Procedural Art + Inlined Base64 SFX
                     </span>
                     <p className="text-stone-400 leading-relaxed">
-                      <strong>Zero sound files</strong> (Web Audio synthesizes all sounds mathematically), <strong>zero pre-baked levels</strong> (Mulberry32 PRNG carves maps), and <strong>compact RLE spritesheets</strong>.
+                      <strong>{TORCHBOUND_STATS.pureEngineJsMB} MB of pure JS</strong> synthesizes music, pixel art, and dungeons mathematically, plus <strong>{TORCHBOUND_STATS.inlinedSfxKB} KB of base64 MP3</strong> enemy voices &amp; weapon swings inlined in v2.9.3–v3.0.1.
                     </p>
                   </div>
                 </div>

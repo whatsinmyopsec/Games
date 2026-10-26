@@ -13,6 +13,7 @@ import {
   Gamepad2
 } from 'lucide-react';
 import { playProceduralSound } from '../services/proceduralAudio';
+import { DUNGEN_DOOM_STATS } from '../data/dungenDoomData';
 
 const MAP_W = 12;
 const MAP_H = 12;
@@ -347,7 +348,7 @@ export const DungenDoomSandbox: React.FC = () => {
           <div className="flex items-center gap-2">
             <Eye className="h-5 w-5 text-rose-400" />
             <h2 className="text-xl font-bold text-stone-100 font-serif">
-              Playable Dungen Doom Game (3D Retro FPS &middot; 357 KB)
+              Playable Dungen Doom Game (3D Retro FPS &middot; {DUNGEN_DOOM_STATS.bundleGzipKB} KB)
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-stone-400 mt-1">
@@ -396,7 +397,7 @@ export const DungenDoomSandbox: React.FC = () => {
                 <span className="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse" />
                 <span className="font-bold text-rose-300">Dungen Doom Live 3D Engine</span>
                 <span className="text-stone-500">|</span>
-                <span className="text-emerald-400 font-semibold hidden sm:inline">Transfer: 357 KB Gzip (Three.js WebGL)</span>
+                <span className="text-emerald-400 font-semibold hidden sm:inline">Transfer: {DUNGEN_DOOM_STATS.bundleGzipKB} KB Gzip (Three.js WebGL)</span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -437,7 +438,7 @@ export const DungenDoomSandbox: React.FC = () => {
 
             <div className="bg-stone-950/90 px-4 py-2 border-t border-stone-800 text-[11px] font-mono text-stone-400 flex flex-wrap items-center justify-between gap-2">
               <span>💡 Click the game screen to lock mouse and move (WASD to walk, Mouse to aim/shoot, E to open doors).</span>
-              <span className="text-rose-400">Zero external 3D models &middot; 357 KB total network load</span>
+              <span className="text-rose-400">Zero external 3D models &middot; {DUNGEN_DOOM_STATS.bundleGzipKB} KB JS network load</span>
             </div>
           </div>
         </div>

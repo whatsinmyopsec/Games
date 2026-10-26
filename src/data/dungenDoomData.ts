@@ -10,16 +10,21 @@ export const DUNGEN_DOOM_STATS = {
   title: 'Dungen Doom',
   developer: 'Kivylius',
   url: 'https://kivylius.com/games/dungen-doom/',
-  htmlSizeBytes: 327,
-  bundleSizeBytes: 1256257, // 1.22 MB
-  bundleGzipBytes: 357800, // 357 KB
-  cssSizeBytes: 145627, // 145 KB
-  cssGzipBytes: 24200, // 24 KB
-  totalTransferKB: 382,
+  bundleName: 'index-CbAtqd8W.js',
+  cssName: 'index-oEHxUlVk.css',
+  htmlSizeBytes: 409,
+  bundleSizeBytes: 1505395, // 1.44 MB
+  bundleSizeMB: 1.44,
+  bundleGzipBytes: 431639, // 421.5 KB (~422 KB)
+  bundleGzipKB: 422,
+  cssSizeBytes: 151000, // 147.5 KB
+  cssGzipBytes: 46421, // 45.3 KB
+  totalTransferKB: 467,
   external3DModelsCount: 0,
-  proceduralTextureCount: 48,
+  proceduralTextureCount: 55,
   pixelScale: 3,
   fov: 78,
+  lastAnalyzedUTC: '2026-10-26 17:33 UTC',
 };
 
 export const DUNGEN_DOOM_BREAKDOWN: DungenDoomAsset[] = [
@@ -31,31 +36,31 @@ export const DUNGEN_DOOM_BREAKDOWN: DungenDoomAsset[] = [
     description: 'Stripped Three.js runtime: PerspectiveCamera, WebGLRenderer, BoxGeometry, PlaneGeometry, Vector/Matrix math. Zero 3D engine overhead beyond pure WebGL.',
   },
   {
-    name: 'Dungeon Generation & Enemy AI Loop',
+    name: 'Dungeon Generation, Traps & Enemy AI Loop',
     category: 'engine',
-    rawSizeBytes: 310000,
-    gzipSizeBytes: 89000,
-    description: 'Carves 3D dungeon corridors, wall colliders, doors, stairs, chests, and Imp/Demon/Spider AI state machines in memory.',
+    rawSizeBytes: 495000,
+    gzipSizeBytes: 142000,
+    description: 'Carves 3D dungeon corridors, wall colliders, doors, stairs, spike rows, poison traps, and Imp/Demon/Spider AI state machines in memory.',
   },
   {
-    name: 'Procedural CanvasTexture Generators (yt() & F0())',
+    name: '55 Procedural CanvasTexture Generators (yt() & F0())',
     category: 'textures',
-    rawSizeBytes: 185000,
-    gzipSizeBytes: 58000,
-    description: 'Generates stone walls, crates, banners, torches, rugs, and acid fumes into HTML5 canvases at startup. Zero PNG files shipped!',
+    rawSizeBytes: 235000,
+    gzipSizeBytes: 76000,
+    description: 'Generates stone walls, crates, barricades, sacks, banners, torches, rugs, and poison/acid fumes into HTML5 canvases at startup.',
   },
   {
     name: 'Web Audio Decode Pipeline & Sfx System',
     category: 'audio-code',
-    rawSizeBytes: 81257,
-    gzipSizeBytes: 28800,
-    description: 'Audio manager that decodes ultra-compact Kenney micro-samples (1-4 KB each) on-demand using AudioContext.decodeAudioData.',
+    rawSizeBytes: 95395,
+    gzipSizeBytes: 31639,
+    description: 'Audio manager that decodes 81 ultra-compact Kenney & FilmCow micro-samples (1-4 KB each) on-demand using AudioContext.decodeAudioData.',
   },
   {
-    name: 'UI Stylesheet (index-CH7YMlgW.css)',
+    name: 'UI Stylesheet (index-oEHxUlVk.css)',
     category: 'css',
-    rawSizeBytes: 145627,
-    gzipSizeBytes: 24200,
+    rawSizeBytes: 151000,
+    gzipSizeBytes: 46421,
     description: 'Retro HUD layout, weapon display, health/armor gauges, and responsive canvas viewport scaling.',
   },
 ];
@@ -63,16 +68,16 @@ export const DUNGEN_DOOM_BREAKDOWN: DungenDoomAsset[] = [
 export const DUNGEN_DOOM_PILLARS = [
   {
     id: 'canvas-textures',
-    title: 'Procedural CanvasTextures (Zero Texture Downloads)',
+    title: '55 Procedural CanvasTextures (Zero Texture Atlases)',
     savedMegabytes: 'Saves 40–120 MB',
     tag: 'GRAPHICS & MEMORY',
-    headline: 'Painting 3D Wall Materials Inside Offscreen 2D Canvases',
-    description: 'Instead of loading megabytes of PNG texture packs for stone walls, iron doors, torches, and wooden crates, Dungen Doom paints each material procedurally on startup.',
+    headline: 'Painting 3D Wall & Prop Materials Inside Offscreen 2D Canvases',
+    description: 'Instead of loading megabytes of PNG texture packs for stone walls, iron doors, torches, spike traps, and wooden crates, Dungen Doom paints 55 distinct materials procedurally on startup.',
     mechanics: [
       'The function yt("tex.name", () => canvasElement) creates a new THREE.CanvasTexture directly from code.',
       'Uses compact hex color palettes: copper (#c07040, #7a4020, #e8a070), stone (#3e3a48), and planks.',
       'Applies nearest-neighbor texture filtering (THREE.NearestFilter) so low-resolution procedural 32x32 canvases look razor-sharp in retro 90s style.',
-      'Result: High visual variety with 0 bytes of network texture requests.'
+      'Result: High visual variety across 55 texture keys with only 6 small hub background sprites.'
     ],
     conventionalVs: 'Standard 3D games download 50MB to 2GB of baked PNG/DDS textures and normal maps.'
   },
@@ -111,9 +116,9 @@ export const DUNGEN_DOOM_PILLARS = [
     savedMegabytes: 'Saves 30–80 MB',
     tag: 'AUDIO ARCHITECTURE',
     headline: 'Kenney 1–4 KB Sound Clips Decoded Directly via Web Audio',
-    description: 'While Torchbound uses 100% mathematical synthesis, Dungen Doom uses a hybrid approach: ultra-short 1KB–4KB OGG micro-samples loaded asynchronously on-demand.',
+    description: 'While Torchbound uses Web Audio synthesis plus inlined base64 SFX, Dungen Doom uses ultra-short 1KB–4KB OGG/WAV micro-samples loaded asynchronously on-demand.',
     mechanics: [
-      'Sound effects are pulled from public-domain micro-libraries (Kenney, FilmCow) where each file is just 1.5 KB to 4 KB.',
+      '81 sound effect references pulled from public-domain micro-libraries (Kenney, FilmCow) where each file is just 1.5 KB to 4 KB.',
       'Files are fetched via fetch("audio/" + file) and decoded into native Web Audio memory buffers using AudioContext.decodeAudioData().',
       'The initial page load requires 0 audio downloads; sounds stream in the background only when triggered.',
       'Total memory footprint of all sound effects combined is under 200 KB!'
@@ -125,13 +130,13 @@ export const DUNGEN_DOOM_PILLARS = [
 export const COMPARISON_TABLE = [
   {
     dimension: 'Core Genre',
-    torchbound: '2D Top-Down Co-op Dungeon Crawler',
+    torchbound: '2D Top-Down Co-op Dungeon Crawler (v3.0.7)',
     dungenDoom: '3D First-Person Retro FPS Dungeon Crawler',
   },
   {
     dimension: 'Initial Network Transfer',
-    torchbound: '~298 KB gzipped (game.html)',
-    dungenDoom: '~357 KB gzipped (index.js bundle)',
+    torchbound: '868 KB gzipped (2.08 MB index.html with inlined SFX)',
+    dungenDoom: '422 KB gzipped (1.44 MB index-CbAtqd8W.js bundle)',
   },
   {
     dimension: 'Rendering Technology',
@@ -140,8 +145,8 @@ export const COMPARISON_TABLE = [
   },
   {
     dimension: 'Texture & Art Pipeline',
-    torchbound: 'Base64 Run-Length Encoded bitmapped strings',
-    dungenDoom: 'Procedural CanvasTextures generated in offscreen canvases',
+    torchbound: 'Procedural pixel art + dynamic color mixing',
+    dungenDoom: '55 Procedural CanvasTextures generated in offscreen canvases',
   },
   {
     dimension: '3D Geometry Files',
@@ -150,7 +155,7 @@ export const COMPARISON_TABLE = [
   },
   {
     dimension: 'Audio Pipeline',
-    torchbound: '100% Procedural Web Audio API (0 sound files)',
+    torchbound: 'Procedural Web Audio synth + 558 KB inlined Base64 MP3s',
     dungenDoom: 'On-demand 2KB Kenney micro-OGGs + Web Audio decoder',
   },
   {
@@ -160,7 +165,7 @@ export const COMPARISON_TABLE = [
   },
   {
     dimension: 'Desktop Packaging',
-    torchbound: 'Neutralinojs + Microsoft Edge WebView2 (13.2 MB zip)',
-    dungenDoom: 'Direct Web PWA (installs via browser with 0 MB overhead)',
+    torchbound: 'Neutralinojs + Microsoft Edge WebView2 (2.1 MB zip)',
+    dungenDoom: 'Direct Web App (installs via browser with 0 MB overhead)',
   },
 ];

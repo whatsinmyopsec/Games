@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Flame, ExternalLink, Download, Sparkles, HardDrive, Cpu, Music, Gamepad2, Eye, Zap, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { TORCHBOUND_STATS } from '../data/torchboundData';
+import { DUNGEN_DOOM_STATS } from '../data/dungenDoomData';
 
 export const Header: React.FC = () => {
   const [liveVersion, setLiveVersion] = useState<string>(TORCHBOUND_STATS.version);
@@ -49,7 +50,7 @@ export const Header: React.FC = () => {
               {/* Live Version Tracked Indicator */}
               <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-2.5 py-1 text-[11px] font-mono text-emerald-300">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Official Release Tracked: v{liveVersion}</span>
+                <span>Official Release Tracked: v{liveVersion} &middot; Daily Reset: 00:00 UTC</span>
                 <button
                   onClick={checkLiveVersion}
                   className="hover:text-emerald-100 ml-1 cursor-pointer"
@@ -65,7 +66,7 @@ export const Header: React.FC = () => {
             </h1>
 
             <p className="max-w-3xl text-stone-300 text-sm sm:text-base leading-relaxed">
-              While modern PC titles demand 50 GB to 150 GB of disk space and even simple indie games balloon past 500 MB due to engine bloat, web masterpieces like <strong className="text-amber-300 font-semibold">Torchbound</strong> (now just <strong>{TORCHBOUND_STATS.downloadZipSizeMB} MB zip</strong> in v{liveVersion}) and <strong className="text-rose-300 font-semibold">Dungen Doom</strong> (3D FPS, 357 KB transfer) deliver complete multiplayer and retro 3D experiences in the space of a single photo. How is this possible?
+              While modern PC titles demand 50 GB to 150 GB of disk space and even simple indie games balloon past 500 MB due to engine bloat, web masterpieces like <strong className="text-amber-300 font-semibold">Torchbound</strong> (now just <strong>{TORCHBOUND_STATS.downloadZipSizeMB} MB zip</strong> in v{liveVersion}) and <strong className="text-rose-300 font-semibold">Dungen Doom</strong> (3D FPS, {DUNGEN_DOOM_STATS.bundleGzipKB} KB JS transfer) deliver complete multiplayer and retro 3D experiences in the space of a single photo. How is this possible?
             </p>
           </div>
 
@@ -88,7 +89,7 @@ export const Header: React.FC = () => {
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-rose-500/40 bg-rose-600/20 px-4 py-2.5 text-sm font-medium text-rose-200 hover:bg-rose-600/30 hover:border-rose-400 transition shadow-lg shadow-rose-950/40"
             >
               <Eye className="h-4 w-4 text-rose-400" />
-              <span>Dungen Doom (357KB)</span>
+              <span>Dungen Doom ({DUNGEN_DOOM_STATS.bundleGzipKB}KB)</span>
               <ExternalLink className="h-3.5 w-3.5 opacity-70" />
             </a>
           </div>
@@ -110,8 +111,8 @@ export const Header: React.FC = () => {
               <Eye className="h-4 w-4 text-rose-400" />
               <span>Dungen Doom 3D</span>
             </div>
-            <div className="mt-1 text-2xl font-bold text-rose-300 font-mono">357 KB</div>
-            <div className="text-[11px] text-stone-400 mt-0.5">3D WebGL + Billboards (Gzip)</div>
+            <div className="mt-1 text-2xl font-bold text-rose-300 font-mono">{DUNGEN_DOOM_STATS.bundleGzipKB} KB</div>
+            <div className="text-[11px] text-stone-400 mt-0.5">{DUNGEN_DOOM_STATS.bundleSizeMB} MB JS (Gzip)</div>
           </div>
 
           <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3.5 backdrop-blur">
