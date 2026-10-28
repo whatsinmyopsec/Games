@@ -24,7 +24,7 @@ export const DUNGEN_DOOM_STATS = {
   proceduralTextureCount: 55,
   pixelScale: 3,
   fov: 78,
-  lastAnalyzedUTC: '2026-10-27 04:47 UTC',
+  lastAnalyzedUTC: '2026-10-28 05:22 UTC',
 };
 
 export const DUNGEN_DOOM_BREAKDOWN: DungenDoomAsset[] = [

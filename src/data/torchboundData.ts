@@ -1,28 +1,28 @@
 import { ZipFileEntry, EngineComparisonItem, CodeSnippet } from '../types';
 
 export const TORCHBOUND_STATS = {
-  version: '3.0.10',
+  version: '3.1.1',
   previousVersion: '2.9.0',
   historicalVersion: '2.2.0',
-  downloadZipSizeMB: 2.2,
+  downloadZipSizeMB: 8.7,
   officialLabelZipMB: 2.2,
   previousZipSizeMB: 13.2,
-  downloadZipSizeBytes: 2158455, // 2.03 MiB (2.13 MB decimal, listed as 2.2 MB zip on page)
-  gameHtmlSizeBytes: 2268815, // 2.08 MiB (1.39 MB pure JS engine + 558 KB inlined base64 MP3 SFX + 85 KB PeerJS + 58 KB TTF font)
-  gameHtmlSizeMB: 2.16,
+  downloadZipSizeBytes: 8748107, // 2.03 MiB (2.13 MB decimal, listed as 2.2 MB zip on page)
+  gameHtmlSizeBytes: 2444548, // 2.08 MiB (1.39 MB pure JS engine + 558 KB inlined base64 MP3 SFX + 85 KB PeerJS + 58 KB TTF font)
+  gameHtmlSizeMB: 2.33,
   pureEngineJsMB: 1.39,
   inlinedSfxKB: 558,
-  gameHtmlGzipSizeBytes: 918217, // 868 KB gzipped
-  gameHtmlGzipKB: 897,
+  gameHtmlGzipSizeBytes: 985396, // 868 KB gzipped
+  gameHtmlGzipKB: 962,
   executableCompressedMB: 1.14,
   executableUncompressedMB: 2.74,
-  resourcesNeuBytes: 2360227, // 2.16 MiB (2.27 MB)
-  resourcesNeuCompressedBytes: 990038, // 938.5 KB compressed
+  resourcesNeuBytes: 9059191, // 2.16 MiB (2.27 MB)
+  resourcesNeuCompressedBytes: 7579693, // 938.5 KB compressed
   audioFilesCount: 0, // 0 external files (all procedural Web Audio + inlined base64 strings)
   textureAtlasesCount: 0,
   dungeonGeometryFilesCount: 0,
   optimizationDropPercentage: '84% size reduction (13.2 MB → 2.1 MB)',
-  lastAnalyzedUTC: '2026-10-27 04:47 UTC',
+  lastAnalyzedUTC: '2026-10-28 05:22 UTC',
 };
 
 export const TORCHBOUND_VERSION_HISTORY = [
