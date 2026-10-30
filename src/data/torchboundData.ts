@@ -22,7 +22,7 @@ export const TORCHBOUND_STATS = {
   textureAtlasesCount: 0,
   dungeonGeometryFilesCount: 0,
   optimizationDropPercentage: '84% size reduction (13.2 MB → 2.1 MB)',
-  lastAnalyzedUTC: '2026-10-29 05:31 UTC',
+  lastAnalyzedUTC: '2026-10-30 05:32 UTC',
 };
 
 export const TORCHBOUND_VERSION_HISTORY = [
